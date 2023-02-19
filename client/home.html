@@ -4,19 +4,24 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     
     <title>Barkmessage - Your AI</title>
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <div id="app">
+      <h3>Welcome to the dashboard</h3>
+      <button type="submit" class="btn transparent" id="signout">Sign Out</button>
       <div id="chat_container"></div>
-
       <form>
         <textarea name="prompt" rows="1" cols="1" placeholder="Bark to the Barkmessage to start Your conversation"></textarea>
         <button type="submit"><img src="assets/send.svg" alt="send" />
       </form>
     </div>
 
+
+   <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
     <script type="module" src="app.js"></script>
   </body>
 </html>

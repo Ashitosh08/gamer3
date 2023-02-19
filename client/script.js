@@ -80,6 +80,7 @@ microsoftLogin.addEventListener('click', (e) => {
       const credential = OAuthProvider.credentialFromResult(result)
       const accessToken = credential.accessToken
       const idToken = credential.idToken
+      window.location = 'home.html'
     })
     .catch((error) => {
       // Handle error.
@@ -106,7 +107,7 @@ appleLogin.addEventListener('click', (e) => {
       const credential = OAuthProvider.credentialFromResult(result)
       const accessToken = credential.accessToken
       const idToken = credential.idToken
-
+      window.location = 'home.html'
       // IdP data available using getAdditionalUserInfo(result)
       // ...
     })
@@ -144,6 +145,7 @@ googleLogin.addEventListener('click', (e) => {
       const token = credential.accessToken
       // The signed-in user info.
       const user = result.user
+      window.location = 'home.html'
       // IdP data available using getAdditionalUserInfo(result)
       // ...
     })
@@ -166,7 +168,7 @@ facebookLogin.addEventListener('click', (e) => {
   const provider = new FacebookAuthProvider()
   provider.addScope('user_birthday')
 
-  auth.languageCode = 'it'
+  // auth.languageCode = 'it'
   // To apply the default browser preference instead of explicitly setting it.
   // firebase.auth().useDeviceLanguage();
   provider.setCustomParameters({
@@ -181,7 +183,7 @@ facebookLogin.addEventListener('click', (e) => {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       const credential = FacebookAuthProvider.credentialFromResult(result)
       const accessToken = credential.accessToken
-
+      window.location = 'home.html'
       // IdP data available using getAdditionalUserInfo(result)
       // ...
     })
@@ -207,12 +209,8 @@ signUp.addEventListener('click', (e) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
+      e.preventDefault()
       const user = userCredential.user
-
-      set(ref(database, 'users/' + user.uid), {
-        username: username,
-        email: email,
-      })
 
       alert('user created!')
       // ...
@@ -233,38 +231,49 @@ login.addEventListener('click', (e) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
+      e.preventDefault()
+
       const user = userCredential.user
+      window.location = 'home.html'
 
-      const dt = new Date()
-      update(ref(database, 'users/' + user.uid), {
-        last_login: dt,
-      })
-
+      console.log({ email, password })
       alert('User loged in!')
       // ...
     })
     .catch((error) => {
       const errorCode = error.code
       const errorMessage = error.message
-
+      console.log(error)
       alert(errorMessage)
     })
 })
 
 const user = auth.currentUser
+// onAuthStateChanged(auth, (user) => {
+//   if (user) {
+//     // User is signed in, see docs for a list of available properties
+//     // https://firebase.google.com/docs/reference/js/firebase.User
+//     const uid = user.uid
+//     //bla bla bla
+//     // alert('user alreagy signed in')
+//     // ...
+//   } else {
+//     // User is signed out
+//     // alert('user has logged out')
+//     // ...
+//     //bla bla bla
+//   }
+// })
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid
-    //bla bla bla
-    // alert('user alreagy signed in')
-    // ...
+    var email = user.email
+
+    var text = document.createTextNode(email)
+
+    console.log(user)
+    //is signed in
   } else {
-    // User is signed out
-    // alert('user has logged out')
-    // ...
-    //bla bla bla
+    //no user signed in
   }
 })
 
