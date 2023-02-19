@@ -202,48 +202,69 @@ facebookLogin.addEventListener('click', (e) => {
 
 //signup with Email and Password
 signUp.addEventListener('click', (e) => {
+  // var username = document.getElementById('username').value
+  // var email = document.getElementById('email').value
+  // var password = document.getElementById('password').value
+
+  // createUserWithEmailAndPassword(auth, email, password)
+  //   .then((userCredential) => {
+  //     // Signed in
+  //     e.preventDefault()
+  //     const user = userCredential.user
+
+  //     alert('user created!')
+  //     // ...
+  //   })
+  //   .catch((error) => {
+  //     const errorCode = error.code
+  //     const errorMessage = error.message
+
+  //     alert(errorMessage)
+  //     // ..
+  //   })
+  //Prevent Default Form Submission Behavior
+  e.preventDefault()
+  console.log('clicked')
+
+  var username = document.getElementById('username').value
   var email = document.getElementById('email').value
   var password = document.getElementById('password').value
-  var username = document.getElementById('username').value
 
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
+      location.reload()
       // Signed in
-      e.preventDefault()
-      const user = userCredential.user
-
-      alert('user created!')
-      // ...
+      var user = userCredential.user
+      console.log('user', user.email)
     })
     .catch((error) => {
-      const errorCode = error.code
-      const errorMessage = error.message
-
-      alert(errorMessage)
-      // ..
+      var errorCode = error.code
+      var errorMessage = error.message
+      console.log('error code', errorCode)
+      console.log('error Message', errorMessage)
     })
 })
 
 login.addEventListener('click', (e) => {
-  var email = document.getElementById('email').value
-  var password = document.getElementById('password').value
+  //Prevent Default Form Submission Behavior
+  e.preventDefault()
+  console.log('clicked')
 
-  signInWithEmailAndPassword(auth, email, password)
+  var email = document.getElementById('email')
+  var password = document.getElementById('password')
+
+  signInWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
+      // location.reload();
       // Signed in
-      e.preventDefault()
-
-      const user = userCredential.user
+      var user = userCredential.user
+      console.log('user', user.email)
       window.location = 'home.html'
-
-      console.log({ email, password })
-      alert('User loged in!')
-      // ...
     })
     .catch((error) => {
-      const errorCode = error.code
-      const errorMessage = error.message
-      console.log(error)
+      var errorCode = error.code
+      var errorMessage = error.message
+      // alert("error code", errorCode)
       alert(errorMessage)
     })
 })
