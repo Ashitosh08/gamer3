@@ -291,29 +291,41 @@ loginButton.addEventListener('click', async (event) => {
   }
 })
 
-//protected routes
-// function requireAuth() {
-//   return new Promise((resolve, reject) => {
-//     onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         resolve(user)
-//       } else {
-//         reject(Error('User not authenticated'))
-//       }
-//     })
-//   })
-// }
+// protected routes
+// Define a function that returns a Promise that resolves with the authenticated user
+// or rejects with an error if the user is not authenticated
+function requireAuth() {
+  return new Promise((resolve, reject) => {
+    // Use the onAuthStateChanged() function provided by Firebase to check if the user is authenticated
+    // If the user is authenticated, resolve the Promise with the user object
+    // If the user is not authenticated, reject the Promise with an error
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        resolve(user)
+      } else {
+        location.replace('/index')
+        reject(Error('User not authenticated'))
+      }
+    })
+  })
+}
 
-// document.addEventListener('DOMContentLoaded', async function () {
-//   // Your code here
-//   try {
-//     const user = await requireAuth()
-//     if (window.location.pathname !== '/home.html') {
-//       window.location.href = '/home.html'
-//     }
-//     // If the user is authenticated and not on the home page, redirect to the home page
-//   } catch (error) {
-//     // If the user is not authenticated, redirect to the login page
-//     window.location.href = '/'
-//   }
-// })
+// Add an event listener for the DOMContentLoaded event to run some code when the page loads
+document.addEventListener('DOMContentLoaded', async function () {
+  // Call the requireAuth() function with the await keyword to check if the user is authenticated
+  try {
+    const user = await requireAuth()
+
+    // If the user is authenticated and not on the home page, redirect to the home page
+    if (window.location.pathname !== '/home.html') {
+      window.location.href = '/'
+    }
+  } catch (error) {
+    // If the user is not authenticated, log the error to the console
+    console.error(error)
+    // window.location.href = '/login.html'
+
+    // Uncomment the line below to redirect the user to the login page
+    // window.location.href = '/login.html'
+  }
+})

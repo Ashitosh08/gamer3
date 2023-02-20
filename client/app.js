@@ -189,7 +189,8 @@ signOutButton.addEventListener('click', (e) => {
     .auth()
     .signOut()
     .then(() => {
-      window.location = '/'
+      location.replace('/')
+      // window.location = '/'
       // Sign-out successful.
     })
     .catch((error) => {
