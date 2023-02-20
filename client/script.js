@@ -39,17 +39,18 @@ sign_in_btn.addEventListener('click', () => {
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCJmTVuUoauqWF5rfV3xZoBesVCJPBn1zA',
+  apiKey: 'AIzaSyCwg-eNz0ZdmPhTxPMcmnSk7pD-xWPrFx0',
 
-  authDomain: 'gamer-ff984.firebaseapp.com',
+  authDomain: 'gamr-a4c65.firebaseapp.com',
 
-  projectId: 'gamer-ff984',
+  projectId: 'gamr-a4c65',
 
-  storageBucket: 'gamer-ff984.appspot.com',
+  storageBucket: 'gamr-a4c65.appspot.com',
 
-  messagingSenderId: '377722972397',
+  messagingSenderId: '139648642227',
 
-  appId: '1:377722972397:web:11a0eccdcc659498af44e4',
+  appId: '1:139648642227:web:432e4924cd33095cbbd4c6',
+
   //yout config code
 }
 
@@ -59,7 +60,7 @@ const database = getDatabase(app)
 const auth = getAuth()
 
 //sigin with microsoft
-
+const microsoftLogin = document.getElementById('signUp')
 microsoftLogin.addEventListener('click', (e) => {
   const provider = new OAuthProvider('microsoft.com')
   provider.setCustomParameters({
@@ -84,11 +85,60 @@ microsoftLogin.addEventListener('click', (e) => {
     })
     .catch((error) => {
       // Handle error.
+      const errorCode = error.code
+      const errorMessage = error.message
+      // The email of the user's account used.
+      const email = error.customData.email
+      // The credential that was used.
+      const credential = OAuthProvider.credentialFromError(error)
+      // ...
     })
 })
 
-//sigin with apple
+// SIGN IN WITH GOOGLE
+const googleLogin = document.getElementById('signUp')
+googleLogin.addEventListener('click', (e) => {
+  const auth = getAuth()
+  const provider = new GoogleAuthProvider()
+  provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
 
+  auth.languageCode = 'it'
+  // To apply the default browser preference instead of explicitly setting it.
+  // firebase.auth().useDeviceLanguage();
+
+  provider.setCustomParameters({
+    login_hint: 'user@example.com',
+  })
+
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result)
+      const token = credential.accessToken
+      // The signed-in user info.
+      const user = result.user
+      window.location = 'home.html'
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code
+      const errorMessage = error.message
+      // The email of the user's account used.
+      const email = error.customData?.email
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error)
+
+      console.log(`Error code: ${errorCode}`)
+      console.log(`Error message: ${errorMessage}`)
+      console.log(`Email: ${email}`)
+      console.log(`Credential type: ${credential}`)
+    })
+})
+
+//sigin with Apple
+const appleLogin = document.getElementById('signUp')
 appleLogin.addEventListener('click', (e) => {
   const provider = new OAuthProvider('apple.com')
   provider.addScope('email')
@@ -115,200 +165,155 @@ appleLogin.addEventListener('click', (e) => {
       // Handle Errors here.
       const errorCode = error.code
       const errorMessage = error.message
-      // The email of the user's account used.
-      const email = error.customData.email
+      if (error.email) {
+        const email = error.email
+      }
       // The credential that was used.
       const credential = OAuthProvider.credentialFromError(error)
 
-      // ...
-    })
-})
-
-// SIGN IN WITH GOOGLE
-
-googleLogin.addEventListener('click', (e) => {
-  const auth = getAuth()
-  const provider = new GoogleAuthProvider()
-  provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
-
-  auth.languageCode = 'it'
-  // To apply the default browser preference instead of explicitly setting it.
-  // firebase.auth().useDeviceLanguage();
-
-  provider.setCustomParameters({
-    login_hint: 'user@example.com',
-  })
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result)
-      const token = credential.accessToken
-      // The signed-in user info.
-      const user = result.user
-      window.location = 'home.html'
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code
-      const errorMessage = error.message
-      // The email of the user's account used.
-      const email = error.customData.email
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error)
-      // ...
+      console.error(
+        `Error during Apple Sign-In: ${errorCode} - ${errorMessage}`
+      )
+      alert('Sorry, we could not sign you in. Please try again later.')
     })
 })
 
 // signup with facebook
 
-facebookLogin.addEventListener('click', (e) => {
+const facebookLoginButton = document.getElementById('facebookLogin')
+
+facebookLoginButton.addEventListener('click', async (event) => {
+  event.preventDefault()
+
   const auth = getAuth()
   const provider = new FacebookAuthProvider()
   provider.addScope('user_birthday')
-
-  // auth.languageCode = 'it'
-  // To apply the default browser preference instead of explicitly setting it.
-  // firebase.auth().useDeviceLanguage();
   provider.setCustomParameters({
     display: 'popup',
   })
 
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      // The signed-in user info.
-      const user = result.user
-
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      const credential = FacebookAuthProvider.credentialFromResult(result)
-      const accessToken = credential.accessToken
-      window.location = 'home.html'
-      // IdP data available using getAdditionalUserInfo(result)
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code
-      const errorMessage = error.message
-      // The email of the user's account used.
-      const email = error.customData.email
-      // The AuthCredential type that was used.
-      const credential = FacebookAuthProvider.credentialFromError(error)
-
-      // ...
-    })
-})
-
-//signup with Email and Password
-signUp.addEventListener('click', (e) => {
-  // var username = document.getElementById('username').value
-  // var email = document.getElementById('email').value
-  // var password = document.getElementById('password').value
-
-  // createUserWithEmailAndPassword(auth, email, password)
-  //   .then((userCredential) => {
-  //     // Signed in
-  //     e.preventDefault()
-  //     const user = userCredential.user
-
-  //     alert('user created!')
-  //     // ...
-  //   })
-  //   .catch((error) => {
-  //     const errorCode = error.code
-  //     const errorMessage = error.message
-
-  //     alert(errorMessage)
-  //     // ..
-  //   })
-  //Prevent Default Form Submission Behavior
-  e.preventDefault()
-  console.log('clicked')
-
-  var username = document.getElementById('username').value
-  var email = document.getElementById('email').value
-  var password = document.getElementById('password').value
-
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      location.reload()
-      // Signed in
-      var user = userCredential.user
-      console.log('user', user.email)
-    })
-    .catch((error) => {
-      var errorCode = error.code
-      var errorMessage = error.message
-      console.log('error code', errorCode)
-      console.log('error Message', errorMessage)
-    })
-})
-
-login.addEventListener('click', (e) => {
-  //Prevent Default Form Submission Behavior
-  e.preventDefault()
-  console.log('clicked')
-
-  var email = document.getElementById('email')
-  var password = document.getElementById('password')
-
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .then((userCredential) => {
-      // location.reload();
-      // Signed in
-      var user = userCredential.user
-      console.log('user', user.email)
-      window.location = 'home.html'
-    })
-    .catch((error) => {
-      var errorCode = error.code
-      var errorMessage = error.message
-      // alert("error code", errorCode)
-      alert(errorMessage)
-    })
-})
-
-const user = auth.currentUser
-// onAuthStateChanged(auth, (user) => {
-//   if (user) {
-//     // User is signed in, see docs for a list of available properties
-//     // https://firebase.google.com/docs/reference/js/firebase.User
-//     const uid = user.uid
-//     //bla bla bla
-//     // alert('user alreagy signed in')
-//     // ...
-//   } else {
-//     // User is signed out
-//     // alert('user has logged out')
-//     // ...
-//     //bla bla bla
-//   }
-// })
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    var email = user.email
-
-    var text = document.createTextNode(email)
-
-    console.log(user)
-    //is signed in
-  } else {
-    //no user signed in
+  try {
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
+    const credential = FacebookAuthProvider.credentialFromResult(result)
+    const accessToken = credential.accessToken
+    console.log('User logged in with Facebook:', user.displayName)
+    window.location = 'home.html' // or redirect to any other page
+    // IdP data available using getAdditionalUserInfo(result)
+  } catch (error) {
+    const errorCode = error.code
+    const errorMessage = error.message
+    const email = error.customData?.email // optional chaining to avoid errors if email is not available
+    const credential = FacebookAuthProvider.credentialFromError(error)
+    console.error('Failed to log in with Facebook:', errorMessage)
+    // ... handle the error, such as displaying a message to the user or logging the error for debugging purposes
   }
 })
 
-// logout.addEventListener('click', (e) => {
-//   signOut(auth)
-//     .then(() => {
-//       // Sign-out successful.
-//       alert('user loged out')
-//     })
-//     .catch((error) => {
-//       // An error happened.
-//       const errorCode = error.code
-//       const errorMessage = error.message
+//signup with Email and Password
 
-//       alert(errorMessage)
+const signUpButton = document.getElementById('signUp')
+
+signUpButton.addEventListener('click', async (event) => {
+  event.preventDefault()
+
+  const usernameInput = document.getElementById('username')
+  const emailInput = document.getElementById('email')
+  const passwordInput = document.getElementById('password')
+
+  const username = usernameInput.value.trim()
+  const email = emailInput.value.trim()
+  const password = passwordInput.value.trim()
+
+  if (!username) {
+    return alert('Please enter a username')
+  }
+
+  if (!email) {
+    return alert('Please enter an email address')
+  }
+
+  if (!password) {
+    return alert('Please enter a password')
+  }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    const user = userCredential.user
+    alert('User created successfully!')
+    // ... do something with the user object, such as redirect to another page
+  } catch (error) {
+    const errorCode = error.code
+    const errorMessage = error.message
+    alert(errorMessage)
+    // ... handle the error, such as displaying a message to the user or logging the error for debugging purposes
+  }
+})
+
+//Login with email and password
+
+const loginButton = document.getElementById('login')
+
+loginButton.addEventListener('click', async (event) => {
+  event.preventDefault()
+
+  const emailInput = document.getElementById('email')
+  const passwordInput = document.getElementById('password')
+
+  const email = emailInput.value.trim()
+  const password = passwordInput.value.trim()
+
+  if (!email) {
+    return alert('Please enter an email address')
+  }
+
+  if (!password) {
+    return alert('Please enter a password')
+  }
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    )
+    const user = userCredential.user
+    console.log('User logged in:', user.email)
+    window.location = 'home.html' // or redirect to any other page
+  } catch (error) {
+    const errorMessage = error.message
+    alert(errorMessage)
+    // ... handle the error, such as displaying a message to the user or logging the error for debugging purposes
+  }
+})
+
+//protected routes
+// function requireAuth() {
+//   return new Promise((resolve, reject) => {
+//     onAuthStateChanged(auth, (user) => {
+//       if (user) {
+//         resolve(user)
+//       } else {
+//         reject(Error('User not authenticated'))
+//       }
 //     })
+//   })
+// }
+
+// document.addEventListener('DOMContentLoaded', async function () {
+//   // Your code here
+//   try {
+//     const user = await requireAuth()
+//     if (window.location.pathname !== '/home.html') {
+//       window.location.href = '/home.html'
+//     }
+//     // If the user is authenticated and not on the home page, redirect to the home page
+//   } catch (error) {
+//     // If the user is not authenticated, redirect to the login page
+//     window.location.href = '/'
+//   }
 // })

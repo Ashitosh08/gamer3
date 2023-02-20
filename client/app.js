@@ -155,17 +155,17 @@ form.addEventListener('keyup', (e) => {
 })
 
 var firebaseConfig = {
-  apiKey: 'AIzaSyCJmTVuUoauqWF5rfV3xZoBesVCJPBn1zA',
+  apiKey: 'AIzaSyCwg-eNz0ZdmPhTxPMcmnSk7pD-xWPrFx0',
 
-  authDomain: 'gamer-ff984.firebaseapp.com',
+  authDomain: 'gamr-a4c65.firebaseapp.com',
 
-  projectId: 'gamer-ff984',
+  projectId: 'gamr-a4c65',
 
-  storageBucket: 'gamer-ff984.appspot.com',
+  storageBucket: 'gamr-a4c65.appspot.com',
 
-  messagingSenderId: '377722972397',
+  messagingSenderId: '139648642227',
 
-  appId: '1:377722972397:web:11a0eccdcc659498af44e4',
+  appId: '1:139648642227:web:432e4924cd33095cbbd4c6',
 }
 
 firebase.initializeApp(firebaseConfig)
@@ -189,7 +189,7 @@ signOutButton.addEventListener('click', (e) => {
     .auth()
     .signOut()
     .then(() => {
-      window.location = 'http://127.0.0.1:5173/?#'
+      window.location = '/'
       // Sign-out successful.
     })
     .catch((error) => {
